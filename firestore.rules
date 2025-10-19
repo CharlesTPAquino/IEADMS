@@ -1,0 +1,48 @@
+/**
+ * @file Firestore Security Rules
+ * @description This ruleset allows public read access to the `postIts` and `reactions` collections.
+ *  Write access (create, update, delete) is disallowed for all users, since the application does not need it and no valid authentication mechanism is in place.
+ *  This configuration reflects the prototyping phase, prioritizing simplicity and openness for demonstration purposes.
+ *
+ * Data Structure:
+ * - /postIts/{postItId}: Stores post-it notes.
+ * - /reactions/{reactionId}: Stores reactions to post-it notes.
+ *
+ * Key Security Decisions:
+ * - Public read access is enabled for all collections to facilitate easy demonstration and prototyping.
+ * - Write access is disabled since the error received is related to read permissions and no valid authentication/authorization mechanism is in place yet.
+ *
+ *  WARNING: This is a prototyping ruleset with minimal security restrictions.
+ *  It should not be used in a production environment without significant modification and hardening.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Allows public read access (get, list) to the `postIts` collection.
+     *  All write operations (create, update, delete) are denied.
+     * @path /postIts/{postItId}
+     * @allow (get, list): Any user can read any post-it note.
+     * @deny (create, update, delete): No user can create, update, or delete any post-it note.
+     * @principle Allows public read access for prototyping and demonstration.
+     */
+    match /postIts/{postItId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Allows public read access (get, list) to the `reactions` collection.
+     *  All write operations (create, update, delete) are denied.
+     * @path /reactions/{reactionId}
+     * @allow (get, list): Any user can read any reaction.
+     * @deny (create, update, delete): No user can create, update, or delete any reaction.
+     * @principle Allows public read access for prototyping and demonstration.
+     */
+    match /reactions/{reactionId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+  }
+}
