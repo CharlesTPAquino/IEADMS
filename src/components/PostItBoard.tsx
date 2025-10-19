@@ -58,19 +58,19 @@ export function PostItBoard() {
             </div>
           </div>
         </div>
-        <div className="text-center px-2 sm:px-6">
-            <div className="flex flex-col items-center justify-center gap-1 sm:gap-2 mb-1 sm:mb-2">
+        <div className="text-center px-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-2">
               <Logo className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" />
-              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400 bg-clip-text text-transparent drop-shadow-sm transition-transform duration-300 hover:scale-105">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400 bg-clip-text text-transparent drop-shadow-sm">
                 IEADMS
               </h1>
             </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3 mt-1 sm:mt-3">
+            <div className="flex items-center justify-center gap-3 mt-3">
               <div className="flex items-center gap-2 opacity-80">
                 <Cross className="w-4 h-4 text-amber-500 dark:text-amber-400" />
                 <Heart className="w-3 h-3 text-red-400 fill-current" />
               </div>
-              <span className="text-xs sm:text-sm md:text-base font-bold bg-gradient-to-r from-amber-600 via-orange-500 to-red-500 dark:from-amber-400 dark:via-orange-400 dark:to-red-400 bg-clip-text text-transparent tracking-wide uppercase transition-all duration-300 hover:drop-shadow-[0_0_15px_rgba(251,191,36,0.8)] hover:scale-105">
+              <span className="text-sm sm:text-base font-bold bg-gradient-to-r from-amber-600 via-orange-500 to-red-500 dark:from-amber-400 dark:via-orange-400 dark:to-red-400 bg-clip-text text-transparent tracking-wide uppercase">
                 MATURIDADE CRISTÃ
               </span>
               <div className="flex items-center gap-2 opacity-80">
