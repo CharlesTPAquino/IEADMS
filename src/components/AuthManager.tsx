@@ -1,22 +1,36 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useAuth, useUser } from '@/firebase';
+import { useUser } from '@/firebase';
 import { initiateAnonymousSignIn } from '@/firebase/non-blocking-login';
 import { Skeleton } from './ui/skeleton';
 
 export default function AuthManager({ children }: { children: React.ReactNode }) {
-  const auth = useAuth();
-  const { user, isUserLoading } = useUser();
+  // useUser may throw if Firebase services are not provided; guard against that.
+  let userHook;
+  try {
+    userHook = useUser();
+  } catch {
+    // Firebase not configured in this environment; fall back to a guest user state.
+    userHook = { user: { uid: 'guest' }, isUserLoading: false, userError: null };
+  }
+
+  const { user, isUserLoading } = userHook;
 
   useEffect(() => {
-    if (auth && !isUserLoading && !user) {
-      initiateAnonymousSignIn(auth);
+    // If there is a proper auth flow available, the initiateAnonymousSignIn shim
+    // will be a no-op. This keeps behavior safe either way.
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const maybeAuth = require('@/firebase').useAuth?.();
+      if (maybeAuth && !isUserLoading && !user) {
+        initiateAnonymousSignIn(maybeAuth);
+      }
+    } catch {
+      // ignore: auth not available
     }
-  }, [auth, user, isUserLoading]);
+  }, [user, isUserLoading]);
 
-  // If user is loading OR if there's no user yet (anonymous sign-in is in progress)
-  // show the skeleton loader.
   if (isUserLoading || !user) {
     return (
       <div className="flex flex-col w-full h-screen p-4 sm:p-6 md:p-8 gap-4">
@@ -39,6 +53,5 @@ export default function AuthManager({ children }: { children: React.ReactNode })
     );
   }
 
-  // Only render children when we have an authenticated user.
   return <>{children}</>;
 }

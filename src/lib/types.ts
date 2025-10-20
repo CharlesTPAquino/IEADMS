@@ -1,5 +1,3 @@
-import type { Timestamp } from 'firebase/firestore';
-
 export type Reactions = {
   '❤️': number;
   '🙏': number;
@@ -15,5 +13,10 @@ export interface PostIt {
   authorName: string;
   backgroundColor: string;
   reactions: Reactions;
-  createdAt: Timestamp;
+  /**
+   * `createdAt` originally used Firebase Timestamp. To avoid coupling with
+   * the Firebase SDK this project now accepts a simple serializable type.
+   * Code that used `createdAt.toDate()` should guard for that shape.
+   */
+  createdAt: Date | { toDate?: () => Date } | string | null;
 }

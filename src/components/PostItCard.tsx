@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { doc, increment } from 'firebase/firestore';
+import { doc, increment } from '@/lib/firebase-shims';
 import { useFirestore } from '@/firebase';
 import type { PostIt, ReactionEmoji } from '@/lib/types';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,19 +27,28 @@ export function PostItCard({ post }: PostItCardProps) {
   const [timeAgo, setTimeAgo] = useState<string | null>(null);
 
   useEffect(() => {
-    if (post.createdAt?.toDate) {
-      const postDate = post.createdAt.toDate();
-      const updateDate = () => {
-        setTimeAgo(formatDistanceToNow(postDate, { addSuffix: true, locale: ptBR }));
-      };
-      
-      // Run on mount to set initial value on client
-      updateDate();
-      
-      const interval = setInterval(updateDate, 60000);
-
-      return () => clearInterval(interval);
+    // Support different createdAt shapes: Date, object with toDate(), or ISO string
+    let postDate: Date | null = null;
+  if (!post.createdAt) return;
+    if (typeof post.createdAt === 'string') {
+      postDate = new Date(post.createdAt);
+    } else if (post.createdAt instanceof Date) {
+      postDate = post.createdAt;
+    } else if (typeof (post.createdAt as any).toDate === 'function') {
+      postDate = (post.createdAt as any).toDate();
     }
+    if (!postDate) return;
+
+    const updateDate = () => {
+      setTimeAgo(formatDistanceToNow(postDate as Date, { addSuffix: true, locale: ptBR }));
+    };
+
+    // Run on mount to set initial value on client
+    updateDate();
+
+    const interval = setInterval(updateDate, 60000);
+
+    return () => clearInterval(interval);
   }, [post.createdAt]);
 
   const handleReaction = (emoji: ReactionEmoji) => {

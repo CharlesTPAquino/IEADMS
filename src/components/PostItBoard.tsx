@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { collection, query, orderBy } from 'firebase/firestore';
+import { collection, query, orderBy } from '@/lib/firebase-shims';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import type { PostIt } from '@/lib/types';
 import { PostItCard } from '@/components/PostItCard';

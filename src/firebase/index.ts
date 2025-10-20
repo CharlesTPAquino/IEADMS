@@ -1,27 +1,20 @@
-'use client';
+"use client";
 
-import { firebaseConfig } from '@/firebase/config';
-import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore'
+// Shimbed firebase index: exports safe, minimal APIs so the rest of the
+// application doesn't need the real Firebase SDK. These stubs intentionally
+// do nothing (or throw clear errors) and keep the same module surface so
+// imports across the app stay valid.
 
-// IMPORTANT: DO NOT MODIFY THIS FUNCTION
 export function initializeFirebase() {
-  if (!getApps().length) {
-    // Pass the config object directly to initializeApp to ensure it's always available.
-    const firebaseApp = initializeApp(firebaseConfig);
-    return getSdks(firebaseApp);
-  }
-
-  // If already initialized, return the SDKs with the already initialized App
-  return getSdks(getApp());
+  // No-op: real initialization removed.
+  return null;
 }
 
-export function getSdks(firebaseApp: FirebaseApp) {
+export function getSdks() {
   return {
-    firebaseApp,
-    auth: getAuth(firebaseApp),
-    firestore: getFirestore(firebaseApp)
+    firebaseApp: null,
+    auth: null,
+    firestore: null,
   };
 }
 

@@ -1,10 +1,4 @@
-// This file is deprecated and will be removed in a future version.
-// Please use the hooks and providers from '@/firebase' instead.
-import { getApps, getApp, initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { clientConfig } from "./firebase-client-config";
+// Deprecated stub: real Firebase initialization removed.
+// Keep this file to avoid breaking imports that may still reference it.
 
-const app = !getApps().length ? initializeApp(clientConfig) : getApp();
-const db = getFirestore(app);
-
-export { db };
+export const db = null;
